@@ -1,0 +1,40 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+
+void Show_multimap(const std::pair<int, std::string>& m)
+{
+	std::cout << m.first << "    " << m.second << std::endl;
+}
+
+int main()
+{
+	// multimap 키 값 int형과 데이터 형 string의 데이터를 갖는 객체 생성
+		// 객체에 데이터 6개를 입력
+		// 지역 코드가 415, 718, 510인 도시 수 차례대로 출력
+		// 이터레이터를 만들어 지역 코드와 도시들 출력
+		// 지역 코드가 718인 도시들의 도시 이름을 출력
+			  // 지역 코드가 400보다 크고, 600보다 이하인 지역의 코드와 도시를 출력
+	using namespace std;
+	multimap<int, string> mp_data;
+	mp_data.insert(pair<int, string>(415, "샌프란시스코")); // 항목들은 키를 기준으로 정렬되므로, 삽입 위치를 지정할 필요는 없다.
+	mp_data.insert(pair<int, string>(510, "오클랜드"));
+	mp_data.insert(pair<int, string>(718, "브루클린"));
+	mp_data.insert(pair<int, string>(718, "스태튼 섬"));
+	mp_data.insert(pair<int, string>(415, "샌라파엘"));
+	mp_data.insert(pair<int, string>(510, "버클리"));
+
+	cout << mp_data.count(415) << endl;
+	cout << mp_data.count(718) << endl;
+	cout << mp_data.count(510) << endl;
+
+	multimap<int, string>::iterator ir = mp_data.begin();
+	multimap<int, string>::iterator ir_end = mp_data.end();
+	for_each(ir, ir_end, Show_multimap);
+	pair<decltype(ir), decltype(ir_end)> a718 = mp_data.equal_range(718); // pair<이터레이터의 형, 이터레이터의 형> a718은 2개의 이터레이터를 갖는 객체. first,second로 접근
+	for_each(a718.first, a718.second, Show_multimap);
+	pair<decltype(ir), decltype(ir_end)> a400over(mp_data.lower_bound(400), mp_data.upper_bound(600));
+	for_each(a400over.first, a400over.second, Show_multimap);
+	return 0;
+}
